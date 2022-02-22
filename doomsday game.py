@@ -1,7 +1,7 @@
 import datetime
 import random
+user_score = 0
 
-# Input Validation framework and looping
 def get_input(prompt="",cast=None, condition=None, errorMessage=None):
     while True:
         try:
@@ -11,7 +11,6 @@ def get_input(prompt="",cast=None, condition=None, errorMessage=None):
         except:
             print(errorMessage)
 
-# User settings2
 print("Hi, welcome to The doomsday calculation game!")
 difficulty_level = get_input(prompt="Please choose the number associated with the desired difficulty level:\n1. Begginner (1900-2099)\n2. Intermediate (1800-2199)\n3. Hard (1-9999)\n",
                         cast=int,
@@ -22,7 +21,6 @@ question_amount = get_input(prompt="How many times do you want to guess?\n",
                         condition=lambda y: y>0,
                         errorMessage="Please choose a valid number of questions desired.")
 
-# Setting difficulty brackets
 if difficulty_level == 1:
     start_date = datetime.date(1900,1,1)
     end_date = datetime.date(2099,12,31)
@@ -33,23 +31,15 @@ elif difficulty_level == 3:
     start_date = datetime.date(1,1,1)
     end_date = datetime.date(9999,12,31)
 
-# Getting the span of the chosen dates for later randomization and converting it to nominal number of days
 dates_span = end_date - start_date
 days_between_dates = dates_span.days
 
 print("Rule: For a random date, you answer what day of the week that is:\n0-Sunday 1-Monday 2-Tuesday 3-Wednesday 4-Thursday 5-Friday 6-Saturday")
-
-# Looping the game number of times chosen by the user before
-x = 0
-user_score = 0
-while x < question_amount:
-
-    # Getting a random number between 0 and the max days in the chosen difficulty date span
+for x in range(question_amount):
     randomized_number_of_days = random.randrange(0,days_between_dates)
-    # Summing start date with the random number of days
     psuedo_random_date = start_date + datetime.timedelta(days = randomized_number_of_days)
-
     print("Your date to guess is",psuedo_random_date.strftime("%d %b, %Y"))
+
     user_guess = get_input(prompt="What is your guess?\n",
                         cast=int,
                         condition= lambda x:-1<x<7,
@@ -61,7 +51,7 @@ while x < question_amount:
        user_score += 1
     else:
         print("Wrong answer, the correct one was",psuedo_random_date.weekday())
-    x += 1
+    x+=1
 
 print("You were",user_score/question_amount*100,"% accurate. You got",user_score,"out of",question_amount,"questions right.")
-exit = input ("Press enter to exit")
+exit = input("Press enter to exit")
